@@ -1,0 +1,2 @@
+ng g s _services/account.service.ts --skip-tests --dry-run
+ng g c nav --skip-tests

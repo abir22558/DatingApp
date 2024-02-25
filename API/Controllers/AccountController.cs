@@ -27,7 +27,7 @@ return  await _context.Users.AnyAsync(x=>x.UserName.ToLower() == userName.ToLowe
 }
 
 [HttpPost("register")]
-public async Task<ActionResult<AppUser>> Register (RegisterDto registerDto)
+public async Task<ActionResult<UserDto>> Register (RegisterDto registerDto)
 {
 if(await UserExists(registerDto.UserName)) return BadRequest("username already taken"); 
 
@@ -43,7 +43,10 @@ if(await UserExists(registerDto.UserName)) return BadRequest("username already t
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        return user ;
+        return new UserDto(){
+            Username = user.UserName ,
+            TokenKey = _tokenService.CreateToken(user)
+        }  ;
 }
 [HttpPost("login")]
 public async Task<ActionResult<UserDto>> Login(LoginDto login){
