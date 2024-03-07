@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AccountServiceTsService } from '../_services/account.service.ts.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,7 @@ export class RegisterComponent implements OnInit {
   RegisterForm :  FormGroup ;
   @Output() registerModeHomePage = new EventEmitter<boolean>(); 
   
-  constructor(private accountService : AccountServiceTsService){
+  constructor(private accountService : AccountServiceTsService, private toaster:ToastrService ){
 
     this.RegisterForm = new FormGroup ({
         'username': new FormControl(''),
@@ -28,7 +29,7 @@ export class RegisterComponent implements OnInit {
       next : () => {
         this.cancel();
       },
-      error : error => console.log("error" , error)
+      error : error => this.toaster.error(error.error)
     });
   }
 
